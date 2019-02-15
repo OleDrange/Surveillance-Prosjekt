@@ -1,3 +1,6 @@
+// For å få uPLibarary til å virke trykker du i visual studio Tool -> NuGet Package Manager -> Manage NuGet Package Solution  -> Browse -> Søk -> Plt.M2Mqtt og install
+// På raspberry pi må du laste ned exe filen og M2Mqtt.Net.dll
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
