@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
+
+
+namespace mqtttest
+{
+    public partial class Form1 : Form
+    {
+        MqttClient client;
+        string clientId;
+        Random rand = new Random();
+        public Form1()
+        {
+            InitializeComponent();
+
+            string BrokerAddress = "192.168.43.208";
+            client = new MqttClient(BrokerAddress);
+
+            // register a callback-function (we have to implement, see below) which is called by the library when a message was received
+            client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+
+            // use a unique id as client id, each time we start the application
+            clientId = Guid.NewGuid().ToString();
+
+            client.Connect(clientId);
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            client.Disconnect();
+
+            base.OnClosed(e);
+            this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Button test = (Button)sender;
+            test.Text = rand.Next(99999).ToString();
+            if (txtTopicSubscribe.Text != "")
+            {
+                // whole topic
+                string Topic = txtTopicSubscribe.Text;
+
+                // subscribe to the topic with QoS 2
+                client.Subscribe(new string[] { Topic }, new byte[] { 2 });   // we need arrays as parameters because we can subscribe to different topics with one call
+                txtReceived.Text = "";
+            }
+            else
+            {
+                MessageBox.Show("You have to enter a topic to subscribe!");
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Button test = (Button)sender;
+            test.Text = rand.Next(99999).ToString();
+            if (txtTopicPublish.Text != "")
+            {
+                // whole topic
+                string Topic = txtTopicPublish.Text;
+
+                // publish a message with QoS 2
+                client.Publish(Topic, Encoding.UTF8.GetBytes(txtPublish.Text), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+            }
+            else
+            {
+                MessageBox.Show("You have to enter a topic to publish!");
+            }
+        }
+        void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        {
+            string ReceivedMessage = Encoding.UTF8.GetString(e.Message);
+
+            txtReceived.Invoke((MethodInvoker)(() => txtReceived.Text = ReceivedMessage));
+
+        }
+    }
+}
