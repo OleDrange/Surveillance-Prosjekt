@@ -1,0 +1,33 @@
+/etc/wpa_supplicant/wpa_supplicant.conf
+
+
+I terminalen skriv:
+
+1) sudo su
+
+2)nano /etc/wpa_supplicant/wpa_supplicant.conf
+
+3) copy/paste:
+        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+        update_config=1
+        country=NO
+
+        network={
+         ssid="eduroam"
+          scan_ssid=1
+         key_mgmt=WPA-EAP
+         eap=PEAP
+         identity= "skole-epost" #ex:"blablabla0@uib.no"
+         password="dittpassord"
+         phase1="peaplabel=0"
+         phase2="auth=MSCHAPV2"
+        }
+
+Exit + lagre
+
+4) Restart network manager, på raspbian stretch (os) kan dere gjøre dette med: 
+
+        sudo ifconfig wlan0 down
+        sudo ifconfig wlan0 up
+
+Eller, restart raspberry pi.
