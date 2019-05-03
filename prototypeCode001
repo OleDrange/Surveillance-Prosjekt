@@ -1,0 +1,157 @@
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
+
+// Temperatur
+#define tempSensor D3
+#define flowSensor D2
+#define muxCh D0
+OneWire oneWire(tempSensor);
+DallasTemperature sensors(&oneWire);
+WiFiClient espClient;
+PubSubClient client(espClient);
+// Update these with values suitable for your network.
+const char* ssid = "janSars"; //wifi ssid
+const char* password = "sars1234"; //wifi Passord
+const char* mqtt_server = "192.168.43.208"; //Broker Ip - static ip på Rpi
+const char* inTopic = "tilESP"; //Topic som ESP subscriber til
+const char* outTopic = "fraESP"; //Topic som ESP publiserer til
+String clientId = "ESP01"; //endre tall for hver ESP
+
+//Variabler for å publisere i intervall
+
+long lastMsg = 0;
+long now = 0;
+char msg[100];
+
+bool muxUtgang = LOW;
+float saltVerdi = 1;
+float turbVerdi = 0;
+float phVerdi = 3;
+float sensorVerdi = 0;
+float calibrationFactor = 4.5;
+volatile byte pulseCount = 0;
+float flowRate = 0.0;
+
+void reconnect() {
+  // Loop until we're reconnected
+  while (!client.connected()) {
+    // Attempt to connect
+    if (client.connect(clientId.c_str())) {
+      client.publish(outTopic, "TESTOUT");
+      client.subscribe(inTopic);
+    } else {
+      delay(5000);
+    }
+  }
+}
+void callback(char* topic, byte* payload, unsigned int length) {
+  if (((char)payload[0] == '0') && ((char)payload[1] == '1'))
+  {
+    digitalWrite(2, LOW);
+    if ((char)payload[2] == 'f')
+    {
+      if ((char)payload[3] == '1')
+      {
+        digitalWrite(D6, HIGH);
+      }
+      else
+      {
+        digitalWrite(D6, LOW);
+      }
+    }
+    if ((char)payload[2] == 'm')
+    {
+      if ((char)payload[3] == '1')
+      {
+        digitalWrite(D5, HIGH);
+      }
+      else
+      {
+        digitalWrite(D5, LOW);
+      }
+    }
+  }
+}
+void pulseCounter()
+{
+  pulseCount++;
+}
+
+
+void flowMessure()
+{
+  detachInterrupt(flowSensor);
+  flowRate = pulseCount / calibrationFactor;
+  pulseCount = 0;
+  attachInterrupt(flowSensor, pulseCounter, FALLING);
+}
+void saltMessure()
+{
+  sensorVerdi = analogRead(A0);
+  saltVerdi = 13.891 * sensorVerdi + 333.09;
+}
+void turbMessure()
+{
+  sensorVerdi = analogRead(A0);
+  sensorVerdi = sensorVerdi * (3.3 / 1024);
+  turbVerdi = (-1120.4 * pow(sensorVerdi, 2)) + (5742.3 * sensorVerdi) - 6273.0;
+}
+
+void phMessure()
+{
+  //Bruker motstand 1000 og 700 ohm måler over 1000 :)
+  sensorVerdi = analogRead(A0);
+  phVerdi = ((1024 - sensorVerdi) * 0.032) - 10.57;
+}
+void pubishMessage()
+{
+  float temp = sensors.getTempCByIndex(0);
+
+  snprintf (msg, 100, "ESP1 Temp%f Flow%f PH%f Salt%f Turb%f Motor%d Feeding%d" , temp, flowRate, phVerdi, saltVerdi, turbVerdi, digitalRead(D5), digitalRead(D6));
+  Serial.println(msg);
+  client.publish(outTopic, msg);
+}
+void setup() {
+  WiFi.begin(ssid, password);
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
+  Serial.begin(9600);
+  pinMode(2, OUTPUT);
+
+  sensors.begin();
+  pinMode(muxCh, OUTPUT);
+  pinMode(flowSensor, INPUT);
+  pinMode(D5, OUTPUT);
+  pinMode(D6, OUTPUT);
+  digitalWrite(D3, HIGH);
+  attachInterrupt(flowSensor, pulseCounter, FALLING);
+}
+
+void loop() {
+  sensors.requestTemperatures();
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+  now = millis();
+  digitalWrite(muxCh, muxUtgang);
+  if (now - lastMsg > 1000) {
+    lastMsg = now;
+    flowMessure();
+    if (muxUtgang == LOW)
+    {
+      phMessure();
+    }
+    else
+    {
+      turbMessure();
+      saltMessure();
+    }
+    pubishMessage();
+    muxUtgang = not muxUtgang;
+    delay(20);
+    
+  }
+}
