@@ -1,8 +1,15 @@
 Download Raspbian here: https://www.raspberrypi.org/downloads/raspbian/
-Use Balena etcher to install Raspbian on sd card https://www.balena.io/etcher/
+Use Balena etcher to install Raspbian on sd card https://www.balena.io/etcher/ 
+Connected raspbarry pi to network (eduroam)
 Install mosquitto : https://www.instructables.com/id/How-to-Use-MQTT-With-the-Raspberry-Pi-and-ESP8266/
-sudo apt-get update
-sudo apt-get dist-upgrade
+  sudo apt-get update
+  sudo apt-get dist-upgrade
+Setup node-red: 
+  sudo apt-get install build-essential
+  bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
+  sudo apt-get install npm
+  sudo npm i -g npm@2.x
+  node-red-start
 Setup screen : https://github.com/goodtft/LCD-show
 
 
