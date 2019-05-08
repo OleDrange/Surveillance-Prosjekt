@@ -1,8 +1,9 @@
 Download Raspbian here: https://www.raspberrypi.org/downloads/raspbian/
 Use Balena etcher to install Raspbian on sd card https://www.balena.io/etcher/
-Install mosquitto : https://www.instructables.com/id/Installing-MQTT-BrokerMosquitto-on-Raspberry-Pi/
+Install mosquitto : https://www.instructables.com/id/How-to-Use-MQTT-With-the-Raspberry-Pi-and-ESP8266/
 sudo apt-get update
 sudo apt-get dist-upgrade
+Setup screen : https://github.com/goodtft/LCD-show
 
 
 
