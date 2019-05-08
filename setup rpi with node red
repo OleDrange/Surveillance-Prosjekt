@@ -1,5 +1,0 @@
-sudo apt-get install build-essential
-bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
-sudo apt-get install npm
-sudo npm i -g npm@2.x
-node-red-start
