@@ -1,0 +1,8 @@
+Download Raspbian here: https://www.raspberrypi.org/downloads/raspbian/
+Use Balena etcher to install Raspbian on sd card https://www.balena.io/etcher/
+Install mosquitto
+sudo apt-get update
+sudo apt-get dist-upgrade
+
+
+
