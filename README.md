@@ -7,4 +7,4 @@
 6. Open Arduino program
 7. Upload and try
 
-With node-red, Raspberry pi, ESP8266 and harddisk
+With node-red, Raspberry pi, ESP8266 and hard drive
