@@ -7,7 +7,8 @@ Go to the new ESP02 flow --> double click on ESP02 (in flow Tab) --> rename to E
 Double click on the blue nodes (https://ibb.co/D7FcpWk) In the Grupe field change to Tank "x" Grupe 1 or Grupe 2
 Dashboard --> layout --> Tank "x" and drag and drop the items in Grupe1 and Grupe2 so its is equal to how its setup in Tank 2
 
-Double click "SPLITTER" node and change if(id == "02") to if(id == "0x") for eksample if(id == "03") --> Done
+Double click "SPLITTER" node and change if(id == "02") to if(id == "0x") for eksample if(id == "03") --> Done 
+if you x is 10 eddit to if(id == "10") do this for all the steps below to
 Double click "Til Database" and change (var output = "INSERT INTO ESP02TBL(";) to (var output = "INSERT INTO ESP0xTBL(";)
 Double click "ESP nr og motor" and both "feeding" nodes and change "02m" to "0xm" and "02f0" to "0xf0" and "02f1" to "0xf1" and press done
 Hit deploy in the top right corner and your done
