@@ -1,2 +1,15 @@
-node-red code: [{"id":"6a78cadb.feb944","type":"ui_switch","z":"59f2b8d9.2ad8d8","name":"","label":"switch","tooltip":"","group":"17d3ee8e.58a5a1","order":0,"width":0,"height":0,"passthru":true,"decouple":"false","topic":"","style":"","onvalue":"true","onvalueType":"bool","onicon":"","oncolor":"","offvalue":"false","offvalueType":"bool","officon":"","offcolor":"","x":313.1000061035156,"y":508.4000358581543,"wires":[["697f622c.2ca69c"]]},{"id":"697f622c.2ca69c","type":"function","z":"59f2b8d9.2ad8d8","name":"ESP nr and m","func":"var output = \"01m\";\nif(msg.payload == true)\n    output += 1;\nelse\n    output +=0;\nreturn {payload:output};","outputs":1,"noerr":0,"x":489.1000518798828,"y":505.6000556945801,"wires":[["c0fc3524.1035c8"]]},{"id":"c0fc3524.1035c8","type":"mqtt out","z":"59f2b8d9.2ad8d8","name":"","topic":"tilESP","qos":"","retain":"","broker":"e55adf34.90fca","x":642.1000366210938,"y":508.20001220703125,"wires":[]},{"id":"17d3ee8e.58a5a1","type":"ui_group","z":"","name":"Mindbox (DIY Arduino)","tab":"cdea1359.d1735","order":2,"disp":true,"width":"6"},{"id":"e55adf34.90fca","type":"mqtt-broker","z":"","name":"","broker":"192.168.43.208","port":"1883","clientid":"","usetls":false,"compatmode":true,"keepalive":"60","cleansession":true,"birthTopic":"tilESP","birthQos":"0","birthPayload":"1","closeTopic":"","closeQos":"0","closePayload":"","willTopic":"","willQos":"0","willPayload":""},{"id":"cdea1359.d1735","type":"ui_tab","z":"","name":"Uhren","icon":"dashboard","order":2}]
+Download node-red from https://nodered.org/docs/getting-started/installation
+Go to terminal in rpi or cmd in windows and type "node-red"
+Oppen web browser and go to the link where the server is(its should be writen in the terminal or cmd after you did last line)
+Mine was for eksample: [info] Server now running at http://127.0.0.1:1880/
+Install node-red-dashboard, by pressing the the 3 lines top right --> Manage Palette -- > intall tab --> search for node-red-dashboard
 
+Then everything is ready to program in node-red and to use it:
+You drag out the desired "node" on the left and place it somewhere on the Flow tab for eksample button (under the dashboard tab), 
+funtion and debug. You now have 3 nodes like this: https://ibb.co/hZdV468
+Then you duble click on button node and a "edit button node" will open
+Here you can setup how the button is working, the groupe tab is the only one needed to edit("add a new ui_grupe" --> "pencil icon" --> add
+drag lines between the nodes and press "Deploy" in top right corner. Then press the graph icon that says dashboard if you hold over.
+Then press the square with the arrow out of it, a new web tab should open and you can se the button. If you press it and go back
+to the programming web tab and click on debug to the right of the dashboard button you can se a text is shown when you press it.
+You can now edit the nodes and do what you like
