@@ -4,7 +4,7 @@ Connected raspbarry pi to network (eduroam)
 Install mosquitto : https://www.instructables.com/id/How-to-Use-MQTT-With-the-Raspberry-Pi-and-ESP8266/
   sudo apt-get update
   sudo apt-get dist-upgrade
-Setup node-red: 
+Setup node-red: (more on the node-red page)
   sudo apt-get install build-essential
   bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
   sudo apt-get install npm
