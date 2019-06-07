@@ -1,0 +1,14 @@
+Inn node-red go to dashboard --> layout --> add tab(+tab) --> edit the new tab and change name to Tank "x" for eksample Tank 3 --> Update
+Add 2 grupes to the new tab (+grupe) --> edit the new grupes (pencil icon + edit) and uncheck "Display grupe name" --> Update
+Go to Flow ESP02 
+Press menu ( 3 lines top right) --> Export --> Clipboard --> select "current flow" --> Export to clipboard
+Press menu --> Import --> Clipboard --> Ctrl + v --> select "new flow" --> Import
+Go to the new ESP02 flow --> double click on ESP02 (in flow Tab) --> rename to ESP0"x" --> Done
+Double click on the blue nodes (https://ibb.co/D7FcpWk) In the Grupe field change to Tank "x" Grupe 1 or Grupe 2
+Dashboard --> layout --> Tank "x" and drag and drop the items in Grupe1 and Grupe2 so its is equal to how its setup in Tank 2
+
+Double click "SPLITTER" node and change if(id == "02") to if(id == "0x") for eksample if(id == "03") --> Done
+Double click "Til Database" and change (var output = "INSERT INTO ESP02TBL(";) to (var output = "INSERT INTO ESP0xTBL(";)
+Double click "ESP nr og motor" and both "feeding" nodes and change "02m" to "0xm" and "02f0" to "0xf0" and "02f1" to "0xf1" and press done
+Hit deploy in the top right corner and your done
+
