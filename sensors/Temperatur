@@ -1,0 +1,30 @@
+Temperatur sensor: 
+1. setup like this: https://ibb.co/FXXpYMN
+2. Download oneWire and dallas instruments addons for arduino (https://www.arduinolibraries.info/libraries/one-wire and https://www.arduinolibraries.info/libraries/dallas-temperature)
+3. Install oneWire and dallas instruments addons for arduino ( in arduino IDE go to "Sketch -> Include Library -> add.zip library")
+4. Write test code in Arduino IED(
+
+#include <OneWire.h> 
+#include <DallasTemperature.h>
+
+#define ONE_WIRE_BUS D3 
+
+OneWire oneWire(ONE_WIRE_BUS); 
+DallasTemperature sensors(&oneWire);
+
+void setup(void) 
+{ 
+ Serial.begin(9600); 
+ sensors.begin(); 
+} 
+void loop(void) 
+{ 
+
+ sensors.requestTemperatures();
+ Serial.print("Temperature is: "); 
+ Serial.println(sensors.getTempCByIndex(0)); // Why "byIndex"?  
+   // You can have more than one DS18B20 on the same bus.  
+   // 0 refers to the first IC on the wire 
+   delay(1000); 
+} 
+5. uppload to microcontroller and open serial monitor "Ctrl + Shift + m "
