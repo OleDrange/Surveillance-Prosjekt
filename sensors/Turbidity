@@ -1,0 +1,24 @@
+First setup the system like this: https://ibb.co/Nj8LXbG
+
+float turbVerdi = 0;
+void Setup(){
+Serial.begin(9600);
+}
+
+void Loop() {
+ 
+turbMessure();
+ Serial.println(turbVerdi);
+ delay(1000);
+
+}
+
+void turbMessure()
+{
+    sensorVerdi = analogRead(A0);
+    sensorVerdi = sensorVerdi * (3.3 / 1024);
+    // Calebrate the value with turbsensor in water (W) and in coffe (C) and write down the values
+    // W = 0,5 NTU    and C = 20 NTU     a = (C - W) / (20 - 0.5)      b = W - (0.5 * a) 
+    //turbVerdi = (sensorVerdi - b) / a
+    turbVerdi = sensorVerdi;
+}
